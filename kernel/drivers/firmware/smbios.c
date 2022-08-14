@@ -1,0 +1,88 @@
+#include <drivers/firmware/smbios.h>
+#include <drivers/char/serial.h>
+#include <kernel/console.h>
+
+static struct smbios_header *first_hdr;
+
+static int smbios_table_len(struct smbios_header *hd)
+{
+    int i;
+    const char *strtab = (char *)hd + hd->len;
+    // Scan until we find a double zero byte
+    for (i = 1; strtab[i - 1] != '\0' || strtab[i] != '\0'; i++)
+        ;
+    return hd->len + i + 1;
+}
+
+static char *check_type(u8 type)
+{
+   switch(type){
+      case 0:
+         return "BIOS Information\x00";
+      case 1:
+         return "System Information\x00";
+      case 2:
+         return "Mainboard Information\x00";
+      case 3:
+         return "Enclosure/Chasis Information\x00";
+      case 4:
+         return "Processor Information\x00";
+      case 7:
+         return "Cache Information\x00";
+      case 9:
+         return "System Slots Information\x00";
+      case 16:
+         return "Physical Memory Array\x00";
+      case 17:
+         return "Memory Device Information\x00";
+      case 19:
+         return "Memory Array Mapped Address\x00";
+      case 20:
+         return "Memory Device Mapped Address\x00";
+      case 32:
+         return "System Boot Information\x00";
+      default:
+         return "SMBIOS structure not supported";
+      // TODO: add more types
+   }
+}
+
+struct smbios_proc_info *get_proc_info()
+{
+   struct smbios_header *hdr = first_hdr;
+   for (int i = 0; i <= 11; i++) {
+      serial_print("-- header %d : %s\n", i, check_type(hdr->type));
+      if (hdr->type == 4) {
+         serial_print("Found processor information structure\n");
+         return (struct smbios_proc_info*)((void*)hdr+sizeof(struct smbios_header));
+      }
+      hdr = (struct smbios_header*)((void*)hdr+smbios_table_len(hdr));
+   }
+   return NULL;
+}
+
+void parse_smbios_ep32_struct(void *entry_32)
+{
+   serial_print("Parsing 32 bits SMBIOS Entry point structure\n");
+   serial_print("-- entry point : %x\n", entry_32);
+   struct smbios_entry_point_32 *smbios_ep = (struct smbios_entry_point_32*)entry_32;
+
+   serial_print("SMBIOS %d.%d parsed\n", smbios_ep->smbios_maj_version, smbios_ep->smbios_min_version);
+   serial_print("-- structure table address at: %x\n", smbios_ep->struct_table_addr);
+
+   void *struct_table_virt_addr = (void*)(0xffff800000000000 + smbios_ep->struct_table_addr);
+   first_hdr = (struct smbios_header*)struct_table_virt_addr;
+}
+
+void parse_smbios_ep64_struct(void *entry_64)
+{
+   serial_print("Parsing 64 bits SMBIOS Entry point structure\n");
+   serial_print("-- entry point : %x\n", entry_64);
+   struct smbios_entry_point_64 *smbios_ep = (struct smbios_entry_point_64*)entry_64; 
+
+   serial_print("SMBIOS %d.%d parsed\n", smbios_ep->smbios_maj_version, smbios_ep->smbios_min_version);
+   serial_print("-- structure table address at: %x\n", smbios_ep->struct_table_addr);
+
+   void *struct_table_virt_addr = (void*)(0xffff800000000000 + smbios_ep->struct_table_addr);
+   first_hdr = (struct smbios_header*)struct_table_virt_addr;
+}
