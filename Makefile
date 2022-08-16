@@ -40,13 +40,11 @@ CFLAGS := 	-ffreestanding 							\
 			-Wall 									\
 			-Wextra 								\
 			-Wstrict-prototypes 					\
-			-Os 									\
 			-MMD 									\
 			-Werror 								\
 			-fno-builtin							\
 			-nostdlib							\
-			-nostdinc							\
-			-target x86_64-elf
+#-target x86_64-elf
 
 ifneq ($(V),)
 	SILENCE	=
@@ -64,7 +62,7 @@ LIMINE_DIR := limine
 LIMINE := $(LIMINE_DIR)/limine-install
 
 QEMU := qemu-system-x86_64
-QEMU_FLAGS := -M q35 -m 2G -debugcon file:debug.txt -serial stdio# -s -S
+QEMU_FLAGS := -M q35 -m 2G -enable-kvm -cpu host -debugcon file:debug.txt -serial stdio# -s -S
 
 TMP_ISO_ROOT := tmp_iso_root
 
