@@ -69,7 +69,7 @@ void itoa(char *buf, u64 base, u64 d)
 	char *p = buf;
 	char *p1, *p2;
 	unsigned long ud = d;
-	int divisor = 10;
+	u64 divisor = 10;
 
 	if (base == 'd' && d < 0) {
 		*p++ = '-';
@@ -80,7 +80,7 @@ void itoa(char *buf, u64 base, u64 d)
 	}
 
 	do {
-		int remainder = ud % divisor;
+		u64 remainder = ud % divisor;
 
 		*p++ =
 		    (remainder < 10) ? remainder + '0' : remainder + 'A' - 10;
