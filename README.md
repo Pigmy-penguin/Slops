@@ -6,7 +6,7 @@ Slops is designed to be simple and easy to use. It is based on the principle of 
 
 Slops is released under the Apache Licence, version 2.
 
- How to use
+  #How to use
 
 ## Build iso image
 
