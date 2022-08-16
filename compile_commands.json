@@ -13,8 +13,6 @@
       "-Wstrict-prototypes",
       "-Werror",
       "-fno-builtin",
-      "-target",
-      "x86_64-elf",
       "-o",
       "kernel/arch/amd64/timers/pit.o",
       "kernel/arch/amd64/timers/pit.c"
@@ -37,8 +35,6 @@
       "-Wstrict-prototypes",
       "-Werror",
       "-fno-builtin",
-      "-target",
-      "x86_64-elf",
       "-o",
       "kernel/arch/amd64/timers/tsc.o",
       "kernel/arch/amd64/timers/tsc.c"
@@ -61,8 +57,6 @@
       "-Wstrict-prototypes",
       "-Werror",
       "-fno-builtin",
-      "-target",
-      "x86_64-elf",
       "-o",
       "kernel/kernel/string.o",
       "kernel/kernel/string.c"
@@ -85,8 +79,28 @@
       "-Wstrict-prototypes",
       "-Werror",
       "-fno-builtin",
-      "-target",
-      "x86_64-elf",
+      "-o",
+      "kernel/kernel/panic.o",
+      "kernel/kernel/panic.c"
+    ],
+    "directory": "/home/pwhx/Projects/slops",
+    "file": "/home/pwhx/Projects/slops/kernel/kernel/panic.c",
+    "output": "/home/pwhx/Projects/slops/kernel/kernel/panic.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang",
+      "-ffreestanding",
+      "-fno-stack-protector",
+      "-fpie",
+      "-c",
+      "-m64",
+      "-I./kernel/",
+      "-Wall",
+      "-Wextra",
+      "-Wstrict-prototypes",
+      "-Werror",
+      "-fno-builtin",
       "-o",
       "kernel/kernel/console.o",
       "kernel/kernel/console.c"
@@ -109,8 +123,6 @@
       "-Wstrict-prototypes",
       "-Werror",
       "-fno-builtin",
-      "-target",
-      "x86_64-elf",
       "-o",
       "kernel/boot/boot.o",
       "kernel/boot/boot.c"
@@ -133,8 +145,6 @@
       "-Wstrict-prototypes",
       "-Werror",
       "-fno-builtin",
-      "-target",
-      "x86_64-elf",
       "-o",
       "kernel/drivers/char/serial.o",
       "kernel/drivers/char/serial.c"
@@ -157,8 +167,6 @@
       "-Wstrict-prototypes",
       "-Werror",
       "-fno-builtin",
-      "-target",
-      "x86_64-elf",
       "-o",
       "kernel/drivers/firmware/smbios.o",
       "kernel/drivers/firmware/smbios.c"
@@ -166,5 +174,43 @@
     "directory": "/home/pwhx/Projects/slops",
     "file": "/home/pwhx/Projects/slops/kernel/drivers/firmware/smbios.c",
     "output": "/home/pwhx/Projects/slops/kernel/drivers/firmware/smbios.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/cc",
+      "-c",
+      "-g",
+      "-O2",
+      "-pipe",
+      "-Wall",
+      "-Wextra",
+      "-std=c99",
+      "-D__USE_MINGW_ANSI_STDIO",
+      "-o",
+      "limine-deploy",
+      "limine-deploy.c"
+    ],
+    "directory": "/home/pwhx/Projects/slops/limine",
+    "file": "/home/pwhx/Projects/slops/limine/limine-deploy.c",
+    "output": "/home/pwhx/Projects/slops/limine/limine-deploy"
+  },
+  {
+    "arguments": [
+      "/usr/bin/cc",
+      "-c",
+      "-g",
+      "-O2",
+      "-pipe",
+      "-Wall",
+      "-Wextra",
+      "-std=c99",
+      "-D__USE_MINGW_ANSI_STDIO",
+      "-o",
+      "limine-version",
+      "limine-version.c"
+    ],
+    "directory": "/home/pwhx/Projects/slops/limine",
+    "file": "/home/pwhx/Projects/slops/limine/limine-version.c",
+    "output": "/home/pwhx/Projects/slops/limine/limine-version"
   }
 ]
