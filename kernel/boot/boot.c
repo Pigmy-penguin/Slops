@@ -93,6 +93,7 @@ void _start(void)
     // Get some information about the cpu using smbios
     struct smbios_proc_info *proc_info = get_proc_info();
     pr_info("Processor max speed : %d MHz", proc_info->max_speed);
+    PANIC("End of kernel");
 
     pr_warn("End of kernel");
     done();
