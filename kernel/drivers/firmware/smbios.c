@@ -2,6 +2,8 @@
 #include <drivers/char/serial.h>
 #include <kernel/console.h>
 
+#define MODULE_NAME "smb"
+
 static struct smbios_header *first_hdr;
 
 static int smbios_table_len(struct smbios_header *hd)
@@ -51,9 +53,9 @@ struct smbios_proc_info *get_proc_info()
 {
    struct smbios_header *hdr = first_hdr;
    for (int i = 0; i <= 11; i++) {
-      serial_print("-- header %d : %s\n", i, check_type(hdr->type));
+      pr_info("-- header %d : %s", i, check_type(hdr->type));
       if (hdr->type == 4) {
-         serial_print("Found processor information structure\n");
+         pr_info("Found processor information structure");
          return (struct smbios_proc_info*)((void*)hdr+sizeof(struct smbios_header));
       }
       hdr = (struct smbios_header*)((void*)hdr+smbios_table_len(hdr));
@@ -63,12 +65,12 @@ struct smbios_proc_info *get_proc_info()
 
 void parse_smbios_ep32_struct(void *entry_32)
 {
-   serial_print("Parsing 32 bits SMBIOS Entry point structure\n");
-   serial_print("-- entry point : %x\n", entry_32);
+   pr_info("Parsing 32 bits SMBIOS Entry point structure");
+   pr_info("-- entry point : %x", entry_32);
    struct smbios_entry_point_32 *smbios_ep = (struct smbios_entry_point_32*)entry_32;
 
-   serial_print("SMBIOS %d.%d parsed\n", smbios_ep->smbios_maj_version, smbios_ep->smbios_min_version);
-   serial_print("-- structure table address at: %x\n", smbios_ep->struct_table_addr);
+   pr_info("SMBIOS %d.%d parsed", smbios_ep->smbios_maj_version, smbios_ep->smbios_min_version);
+   pr_info("-- structure table address at: %x", smbios_ep->struct_table_addr);
 
    void *struct_table_virt_addr = (void*)(0xffff800000000000 + smbios_ep->struct_table_addr);
    first_hdr = (struct smbios_header*)struct_table_virt_addr;
@@ -76,12 +78,12 @@ void parse_smbios_ep32_struct(void *entry_32)
 
 void parse_smbios_ep64_struct(void *entry_64)
 {
-   serial_print("Parsing 64 bits SMBIOS Entry point structure\n");
-   serial_print("-- entry point : %x\n", entry_64);
+   pr_info("Parsing 64 bits SMBIOS Entry point structure");
+   pr_info("-- entry point : %x", entry_64);
    struct smbios_entry_point_64 *smbios_ep = (struct smbios_entry_point_64*)entry_64; 
 
-   serial_print("SMBIOS %d.%d parsed\n", smbios_ep->smbios_maj_version, smbios_ep->smbios_min_version);
-   serial_print("-- structure table address at: %x\n", smbios_ep->struct_table_addr);
+   pr_info("SMBIOS %d.%d parsed", smbios_ep->smbios_maj_version, smbios_ep->smbios_min_version);
+   pr_info("-- structure table address at: %x", smbios_ep->struct_table_addr);
 
    void *struct_table_virt_addr = (void*)(0xffff800000000000 + smbios_ep->struct_table_addr);
    first_hdr = (struct smbios_header*)struct_table_virt_addr;

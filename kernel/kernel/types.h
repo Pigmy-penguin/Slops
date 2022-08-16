@@ -27,8 +27,6 @@ typedef long long		s64;
 
 #define min_t(type, a, b) min(((type) a), ((type) b))
 #define max_t(type, a, b) max(((type) a), ((type) b))
-
-typedef int bool;
 #define NULL ((void *)0)
 
 #endif
