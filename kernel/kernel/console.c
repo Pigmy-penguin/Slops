@@ -5,7 +5,7 @@
 
 #include <drivers/char/serial.h>
 
-u8 font_bitmap[] = {
+static u8 font_bitmap[] = {
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x7e, 0x81, 0xa5, 0x81, 0x81, 0xbd,
   0x99, 0x81, 0x81, 0x7e, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x7e, 0xff,
@@ -556,27 +556,24 @@ static void scroll(void)
 void putc(char c)
 {
    // TODO: turn into a switch statement
-	if (c == '\n') {
-		goto newline;
-	}
-        if (c == '^') {
-           set_color(0xf54263, DEFAULT_BG_COLOR);
-           goto new_color;
-        }
-        if (c == ':') {
-           set_color(DEFAULT_FG_COLOR, DEFAULT_BG_COLOR);
-        }
-        if (c == '@') {
-           set_color(0x34eba8, DEFAULT_BG_COLOR);
-           goto new_color;
-        }
-        if (c == '*') {
-           set_color(0xf8e1af, DEFAULT_BG_COLOR);
-           goto new_color;
-        }
-        if (c == '$') {
-           set_color(DEFAULT_FG_COLOR, 0xf72202);
-           goto new_color;
+   switch (c) {
+      case '\n':
+         goto newline;
+      case '^':
+         set_color(0xf54263, DEFAULT_BG_COLOR);
+         goto new_color;
+      case '~':
+         set_color(DEFAULT_FG_COLOR, DEFAULT_BG_COLOR);
+         goto new_color;
+      case '@':
+         set_color(0x34eba8, DEFAULT_BG_COLOR);
+         goto new_color;
+      case '*':
+         set_color(0xf8e1af, DEFAULT_BG_COLOR);
+         goto new_color;
+      case '$':
+         set_color(DEFAULT_FG_COLOR, 0xf72202);
+         goto new_color;
         }
 	int x_pix = x_pos * 8; // font width
 	int y_pix = y_pos * 16; // font height

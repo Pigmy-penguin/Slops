@@ -8,7 +8,7 @@
 #define ERR "^ERR: "
 #define EMERG "^EMERG: "
 
-#define pr_info(fmt, ...) printk("*" MODULE_NAME ": " fmt "\n", ##__VA_ARGS__)
+#define pr_info(fmt, ...) printk("*" MODULE_NAME "~: " fmt "\n", ##__VA_ARGS__)
 // #define pr_info(fmt, ...) printk("@%s *" MODULE_NAME ": " fmt "\n", get_jiffies(), ##__VA_ARGS__)
 #define pr_warn(fmt, ...) printk(WARN fmt "\n", ##__VA_ARGS__)
 #define pr_err(fmt, ...) printk(ERR fmt "\n", ##__VA_ARGS__)

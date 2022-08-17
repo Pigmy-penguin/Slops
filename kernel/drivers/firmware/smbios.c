@@ -45,7 +45,6 @@ static char *check_type(u8 type)
          return "System Boot Information\x00";
       default:
          return "SMBIOS structure not supported";
-      // TODO: add more types
    }
 }
 

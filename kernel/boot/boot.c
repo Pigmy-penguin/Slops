@@ -13,10 +13,6 @@
 
 u64 __time_at_boot;
 
-/* The Limine requests can be placed anywhere, but it is important that
-the compiler does not optimise them away, so, usually, they should
-be made volatile or equivalent. */
-
 struct limine_bootloader_info_request bootloader_info_request = {
     .id = LIMINE_BOOTLOADER_INFO_REQUEST,
     .revision = 0
@@ -93,8 +89,7 @@ void _start(void)
     // Get some information about the cpu using smbios
     struct smbios_proc_info *proc_info = get_proc_info();
     pr_info("Processor max speed : %d MHz", proc_info->max_speed);
-    PANIC("End of kernel");
-
     pr_warn("End of kernel");
+    PANIC("END OF KERNEL");
     done();
 }

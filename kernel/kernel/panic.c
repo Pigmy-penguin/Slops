@@ -19,11 +19,11 @@ void panic(const char *msg, const char *file, u32 line)
    cls();
    putc('\n');
    serial_print("PANIC: \"%s\" at %s:%d\n", msg, file, line);
-   printk("$- PANIC -: \"%s\" at %s:%d\n\n", msg, file, line);
+   printk("$- PANIC -~ \"%s\" at %s:%d\n\n", msg, file, line);
 
    void *current_RIP;
    asm( "lea 0(%%rip), %0" : "=r"(current_RIP) );  
-   printk("$RIP: %x\n\n", current_RIP);
-   printk("$TIME: (SINCE BOOT) %dMs\n", tsc_get_ms());
+   printk("$RIP~: %x\n\n", current_RIP);
+   printk("$TIME~: (SINCE BOOT) %dMs\n", tsc_get_ms());
    hlt();
 }

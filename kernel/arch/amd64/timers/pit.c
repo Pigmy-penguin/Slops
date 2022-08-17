@@ -1,7 +1,6 @@
 #include <arch/amd64/timers/pit.h>
 #include <arch/amd64/include/pio.h>
 
-// TODO: fix this
 void pit_wait(u64 ms)
 {
    outb(PIT_COMMAND_REG, 0b00110000);
