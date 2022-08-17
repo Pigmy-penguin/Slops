@@ -44,7 +44,7 @@ CFLAGS := 	-ffreestanding 							\
 			-Werror 								\
 			-fno-builtin							\
 			-nostdlib							\
-#-target x86_64-elf
+			-target x86_64-elf
 
 ifneq ($(V),)
 	SILENCE	=

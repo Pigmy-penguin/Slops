@@ -13,28 +13,8 @@
       "-Wstrict-prototypes",
       "-Werror",
       "-fno-builtin",
-      "-o",
-      "kernel/arch/amd64/timers/pit.o",
-      "kernel/arch/amd64/timers/pit.c"
-    ],
-    "directory": "/home/pwhx/Projects/slops",
-    "file": "/home/pwhx/Projects/slops/kernel/arch/amd64/timers/pit.c",
-    "output": "/home/pwhx/Projects/slops/kernel/arch/amd64/timers/pit.o"
-  },
-  {
-    "arguments": [
-      "/usr/bin/clang",
-      "-ffreestanding",
-      "-fno-stack-protector",
-      "-fpie",
-      "-c",
-      "-m64",
-      "-I./kernel/",
-      "-Wall",
-      "-Wextra",
-      "-Wstrict-prototypes",
-      "-Werror",
-      "-fno-builtin",
+      "-target",
+      "x86_64-elf",
       "-o",
       "kernel/arch/amd64/timers/tsc.o",
       "kernel/arch/amd64/timers/tsc.c"
@@ -57,6 +37,32 @@
       "-Wstrict-prototypes",
       "-Werror",
       "-fno-builtin",
+      "-target",
+      "x86_64-elf",
+      "-o",
+      "kernel/arch/amd64/timers/pit.o",
+      "kernel/arch/amd64/timers/pit.c"
+    ],
+    "directory": "/home/pwhx/Projects/slops",
+    "file": "/home/pwhx/Projects/slops/kernel/arch/amd64/timers/pit.c",
+    "output": "/home/pwhx/Projects/slops/kernel/arch/amd64/timers/pit.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang",
+      "-ffreestanding",
+      "-fno-stack-protector",
+      "-fpie",
+      "-c",
+      "-m64",
+      "-I./kernel/",
+      "-Wall",
+      "-Wextra",
+      "-Wstrict-prototypes",
+      "-Werror",
+      "-fno-builtin",
+      "-target",
+      "x86_64-elf",
       "-o",
       "kernel/kernel/string.o",
       "kernel/kernel/string.c"
@@ -79,6 +85,8 @@
       "-Wstrict-prototypes",
       "-Werror",
       "-fno-builtin",
+      "-target",
+      "x86_64-elf",
       "-o",
       "kernel/kernel/panic.o",
       "kernel/kernel/panic.c"
@@ -101,6 +109,8 @@
       "-Wstrict-prototypes",
       "-Werror",
       "-fno-builtin",
+      "-target",
+      "x86_64-elf",
       "-o",
       "kernel/kernel/console.o",
       "kernel/kernel/console.c"
@@ -123,6 +133,8 @@
       "-Wstrict-prototypes",
       "-Werror",
       "-fno-builtin",
+      "-target",
+      "x86_64-elf",
       "-o",
       "kernel/boot/boot.o",
       "kernel/boot/boot.c"
@@ -145,6 +157,8 @@
       "-Wstrict-prototypes",
       "-Werror",
       "-fno-builtin",
+      "-target",
+      "x86_64-elf",
       "-o",
       "kernel/drivers/char/serial.o",
       "kernel/drivers/char/serial.c"
@@ -167,6 +181,8 @@
       "-Wstrict-prototypes",
       "-Werror",
       "-fno-builtin",
+      "-target",
+      "x86_64-elf",
       "-o",
       "kernel/drivers/firmware/smbios.o",
       "kernel/drivers/firmware/smbios.c"
