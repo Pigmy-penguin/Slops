@@ -555,7 +555,6 @@ static void scroll(void)
 // Writes a single character out to the screen.
 void putc(char c)
 {
-   // TODO: turn into a switch statement
    switch (c) {
       case '\n':
          goto newline;
