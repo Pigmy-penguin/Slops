@@ -9,9 +9,14 @@
 #include <arch/amd64/timers/tsc.h>
 #include <kernel/panic.h>
 
+
 #define MODULE_NAME "boot"
 
 u64 __time_at_boot;
+
+/* The Limine requests can be placed anywhere, but it is important that
+the compiler does not optimise them away, so, usually, they should
+be made volatile or equivalent. */
 
 struct limine_bootloader_info_request bootloader_info_request = {
     .id = LIMINE_BOOTLOADER_INFO_REQUEST,
@@ -63,7 +68,7 @@ void _start(void)
     static char s[16] = "";
     // Let's test our cpuid function to get some information about the cpu
     cpuid_string(0, (int*)(s));
-    pr_info("Hello");
+    pr_info("CPU Vendor: %s", s);
 
     calibrate_tsc();
     pr_info("Milliseconds since boot: %d", tsc_get_ms());
@@ -90,6 +95,5 @@ void _start(void)
     struct smbios_proc_info *proc_info = get_proc_info();
     pr_info("Processor max speed : %d MHz", proc_info->max_speed);
     pr_warn("End of kernel");
-    PANIC("END OF KERNEL");
     done();
 }
