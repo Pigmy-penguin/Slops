@@ -7,6 +7,7 @@
 #include <kernel/console.h>
 #include <arch/amd64/include/cpuid.h>
 #include <arch/amd64/timers/tsc.h>
+#include <arch/amd64/cpu/cpu_detect.h>
 #include <kernel/panic.h>
 
 
@@ -64,11 +65,7 @@ void _start(void)
     }
     else
        serial_print("Error while initializing fb console\n");
-
-    static char s[16] = "";
-    // Let's test our cpuid function to get some information about the cpu
-    cpuid_string(0, (int*)(s));
-    pr_info("CPU Vendor: %s", s);
+    detect_cpu();
 
     calibrate_tsc();
     pr_info("Milliseconds since boot: %d", tsc_get_ms());
