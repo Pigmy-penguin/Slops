@@ -11,6 +11,7 @@ static u64 tsc_freq = 0;
 extern u64 __time_at_boot;
 
 // TODO: use our cpuid function
+// TODO: only use the cpu to get the tsc, using MSRs
 void calibrate_tsc(void)
 {
    u32 a, b, c, d;
