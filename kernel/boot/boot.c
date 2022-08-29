@@ -24,6 +24,7 @@
 #include <arch/amd64/include/cpuid.h>
 #include <arch/amd64/timers/tsc.h>
 #include <arch/amd64/cpu/cpu_detect.h>
+#include <arch/amd64/cpu/gdt.h>
 #include <kernel/panic.h>
 
 
@@ -103,6 +104,7 @@ void _start(void)
     // Get some information about the cpu using smbios
     struct smbios_proc_info *proc_info = get_proc_info();
     pr_info("Processor max speed : %d MHz", proc_info->max_speed);
+    gdt_load();
     pr_warn("End of kernel");
     done();
 }
