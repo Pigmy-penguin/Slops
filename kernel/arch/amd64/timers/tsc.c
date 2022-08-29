@@ -1,3 +1,19 @@
+/*
+   Copyright 2022 Pigmy-penguin
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+*/
+
 #include <arch/amd64/timers/tsc.h>
 #include <drivers/char/serial.h>
 #include <arch/amd64/include/msr.h>
@@ -45,7 +61,7 @@ u64 tsc_get_ms(void)
 u64 get_tsc(void)
 {
    u32 lo, hi;
-   /* We cannot use "=A", since this would use %rax on x86_64 */
+   // We cannot use "=A", since this would use %rax on x86_64 //
    __asm__ __volatile__ ("rdtsc" : "=a" (lo), "=d" (hi));
    return (u64)hi << 32 | lo;
 };
