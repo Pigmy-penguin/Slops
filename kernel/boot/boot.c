@@ -21,16 +21,15 @@
 #include <drivers/char/serial.h>
 #include <drivers/firmware/smbios.h>
 #include <kernel/console.h>
-#include <arch/amd64/include/cpuid.h>
-#include <arch/amd64/timers/tsc.h>
-#include <arch/amd64/cpu/cpu_detect.h>
 #include <arch/amd64/cpu/gdt.h>
-#include <kernel/panic.h>
-
+#include <arch/amd64/cpu/cpu_detect.h>
+#include <arch/amd64/timers/tsc.h>
 
 #define MODULE_NAME "boot"
 
 u64 __time_at_boot;
+u64 __physical_base;
+u64 __virtual_base;
 
 struct limine_bootloader_info_request bootloader_info_request = {
     .id = LIMINE_BOOTLOADER_INFO_REQUEST,
@@ -78,6 +77,14 @@ void _start(void)
     }
     else
        serial_print("Error while initializing fb console\n");
+
+    if (kernel_address_request.response != NULL) {
+       __physical_base = kernel_address_request.response->physical_base;
+       __virtual_base = kernel_address_request.response->virtual_base;
+       pr_info("Kernel physical base address: %x", __physical_base);
+       pr_info("Kernel virtual base address: %x", __virtual_base);
+    }
+
     detect_cpu();
 
     calibrate_tsc();
@@ -104,6 +111,7 @@ void _start(void)
     // Get some information about the cpu using smbios
     struct smbios_proc_info *proc_info = get_proc_info();
     pr_info("Processor max speed : %d MHz", proc_info->max_speed);
+
     gdt_load();
     pr_warn("End of kernel");
     done();
