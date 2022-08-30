@@ -18,7 +18,7 @@
 #include <drivers/char/serial.h>
 #include <kernel/console.h>
 
-#define MODULE_NAME "smb"
+#define MODULE_NAME "smbios"
 
 static struct smbios_header *first_hdr;
 
