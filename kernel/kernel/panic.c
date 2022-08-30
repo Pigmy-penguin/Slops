@@ -30,12 +30,17 @@ void hlt(void)
    __builtin_unreachable();
 }
 
-void panic(const char *msg, const char *file, u32 line)
+void panic(const char *msg, const char *file, u32 line, ...)
 {
+   __builtin_va_list args;
+   __builtin_va_start(args, line);
    cls();
    putc('\n');
-   serial_print("PANIC: \"%s\" at %s:%d\n", msg, file, line);
-   printk("$- PANIC -~ \"%s\" at %s:%d\n\n", msg, file, line);
+   char message[1024];
+   vsnprintk(message, sizeof(message), msg, args);
+   serial_print("PANIC: \"%s\" at %s:%d\n", message, file, line);
+   printk("$- PANIC -~ \"%s\" at %s:%d\n\n", message, file, line);
+   __builtin_va_end(args);
 
    void *current_RIP;
    asm( "lea 0(%%rip), %0" : "=r"(current_RIP) );  
