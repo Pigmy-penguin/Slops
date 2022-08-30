@@ -9,7 +9,7 @@ OBJ         := $(ASMSOURCES:.S=.o) $(CSOURCES:.c=.o)
 ifneq ($(DEBUG),)
   COMMON_CFLAGS     += -g -DDEBUG
 else
-  COMMON_CFLAGS     += -DNDEBUG -Os
+  COMMON_CFLAGS     += -DNDEBUG -O0
 endif
 
 
