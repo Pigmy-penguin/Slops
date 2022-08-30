@@ -44,7 +44,10 @@ void idt_load() {
    }
    idt_flush((u64) & idtr);
 
+   pr_info("Created 128 IDT entries");
    pr_info("IDT properly loaded");
+   pr_info("Loaded IDT base: %x", idtr.addr);
+   pr_info("Loaded IDT size: %x", idtr.size);
    return;
 }
 

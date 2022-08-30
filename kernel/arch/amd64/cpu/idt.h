@@ -68,5 +68,6 @@ typedef void (*isr_t)(struct registers *);
 
 void idt_flush(u64);
 void idt_load(void);
+// TODO: void read_idtr(struct *idtr)
 
 #endif

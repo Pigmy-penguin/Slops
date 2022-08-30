@@ -87,6 +87,6 @@ void gdt_load() {
    pr_info("Created %d GDT entries", GDT_ENTRY_COUNT);
    gdt_flush((u64)&gdt_descriptor);
    pr_info("GDT properly loaded");
-   pr_info("New GDT address %x", gdt_descriptor.address);
-   pr_info("New GDT size %x", gdt_descriptor.size);
+   pr_info("Loaded GDT base %x", gdt_descriptor.address);
+   pr_info("Loaded GDT size %x", gdt_descriptor.size);
 }

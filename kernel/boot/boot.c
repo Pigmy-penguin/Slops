@@ -115,7 +115,6 @@ void _start(void)
 
     gdt_load();
     idt_load();
-    __asm__ volatile ("INT $4");
     pr_warn("End of kernel");
     done();
 }
