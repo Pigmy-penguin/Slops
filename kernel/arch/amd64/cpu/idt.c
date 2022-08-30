@@ -15,6 +15,7 @@
 */
 
 #include <kernel/console.h>
+#include <kernel/panic.h>
 #include <arch/amd64/cpu/idt.h>
 #define MODULE_NAME "idt"
 
@@ -51,9 +52,36 @@ void idt_load() {
    return;
 }
 
+static const char *exceptions[] = {
+    "Division exception",
+    "Debug",
+    "NMI",
+    "Breakpoint",
+    "Overflow",
+    "Bound range exceeded",
+    "Invalid opcode",
+    "Device not available",
+    "Double fault",
+    "???",
+    "Invalid TSS",
+    "Segment not present",
+    "Stack-segment fault",
+    "General protection fault",
+    "Page fault",
+    "???",
+    "x87 exception",
+    "Alignment check",
+    "Machine check",
+    "SIMD exception",
+    "Virtualisation"
+};
+
 void interrupts_handler(struct registers *regs);
 // This gets called from our ASM interrupt handler stub.
 void interrupts_handler(struct registers *regs)
 {
    pr_info("Interrupt no %d triggered", regs->int_no);
+   if (regs->int_no < 32) { // if an exception is triggered
+      PANIC("%s triggered", exceptions[regs->int_no]);
+   }
 }
