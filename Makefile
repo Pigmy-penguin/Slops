@@ -6,6 +6,13 @@ CSOURCES    := $(shell find . -not \( -path './limine' -prune \) -type f -name '
 HEADER_DEPS := $(CSOURCES:.c=.d)
 OBJ         := $(ASMSOURCES:.S=.o) $(CSOURCES:.c=.o)
 
+ifneq ($(DEBUG),)
+  COMMON_CFLAGS     += -g -DDEBUG
+else
+  COMMON_CFLAGS     += -DNDEBUG -Os
+endif
+
+
 CC := clang
 AS := $(CC)
 LD := ld.lld
@@ -51,12 +58,6 @@ ifneq ($(V),)
 	SILENCE	=
 else
 	SILENCE = @
-endif
-
-ifneq ($(DEBUG),)
-  COMMON_CFLAGS     += -g -DDEBUG
-else
-  COMMON_CFLAGS     += -DNDEBUG -Os
 endif
 
 LIMINE_DIR := limine
