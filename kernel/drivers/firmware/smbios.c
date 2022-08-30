@@ -85,7 +85,7 @@ void parse_smbios_ep32_struct(void *entry_32)
    struct smbios_entry_point_32 *smbios_ep = (struct smbios_entry_point_32*)entry_32;
 
    pr_info("SMBIOS %d.%d parsed", smbios_ep->smbios_maj_version, smbios_ep->smbios_min_version);
-   pr_info("Structure table address at: %x", smbios_ep->struct_table_addr);
+   pr_info("Structure table physical address at: %x", smbios_ep->struct_table_addr);
 
    void *struct_table_virt_addr = (void*)(0xffff800000000000 + smbios_ep->struct_table_addr);
    first_hdr = (struct smbios_header*)struct_table_virt_addr;
@@ -98,7 +98,7 @@ void parse_smbios_ep64_struct(void *entry_64)
    struct smbios_entry_point_64 *smbios_ep = (struct smbios_entry_point_64*)entry_64; 
 
    pr_info("SMBIOS %d.%d parsed", smbios_ep->smbios_maj_version, smbios_ep->smbios_min_version);
-   pr_info("Structure table address at: %x", smbios_ep->struct_table_addr);
+   pr_info("Structure table physical address at: %x", smbios_ep->struct_table_addr);
 
    void *struct_table_virt_addr = (void*)(0xffff800000000000 + smbios_ep->struct_table_addr);
    first_hdr = (struct smbios_header*)struct_table_virt_addr;
