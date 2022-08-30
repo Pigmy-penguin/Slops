@@ -44,6 +44,7 @@ CFLAGS := 	-ffreestanding 							\
 			-Werror 								\
 			-fno-builtin							\
 			-nostdlib							\
+			-Wno-invalid-noreturn						\
 			-target x86_64-elf
 
 ifneq ($(V),)

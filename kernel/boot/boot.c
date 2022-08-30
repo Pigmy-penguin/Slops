@@ -22,6 +22,7 @@
 #include <drivers/firmware/smbios.h>
 #include <kernel/console.h>
 #include <arch/amd64/cpu/gdt.h>
+#include <arch/amd64/cpu/idt.h>
 #include <arch/amd64/cpu/cpu_detect.h>
 #include <arch/amd64/timers/tsc.h>
 
@@ -113,6 +114,8 @@ void _start(void)
     pr_info("Processor max speed : %d MHz", proc_info->max_speed);
 
     gdt_load();
+    idt_load();
+    __asm__ volatile ("INT $4");
     pr_warn("End of kernel");
     done();
 }
