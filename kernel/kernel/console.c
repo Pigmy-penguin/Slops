@@ -18,6 +18,7 @@
 #include <kernel/types.h>
 #include <kernel/string.h>
 #include <arch/amd64/timers/tsc.h>
+#include <drivers/graphics/fb.h>
 
 #include <drivers/char/serial.h>
 
@@ -366,10 +367,10 @@ static u8 font_bitmap[] = {
   0x00, 0x00, 0x00, 0x00
 };
 
-static u32 *fb; 
-static u16 width;
-static u16 height;
-static u16 pitch;
+extern u32 *fb; 
+extern u16 width;
+extern u16 height;
+extern u16 pitch;
 
 static int x_pos;
 static int y_pos;
@@ -377,27 +378,28 @@ static int y_pos;
 static int fg_color = DEFAULT_FG_COLOR;
 static int bg_color = DEFAULT_BG_COLOR;
 
-static u16 a = 0;
-
 static inline void set_color(u32 fg, u32 bg)
 {
-	fg_color = fg;
-	bg_color = bg;
+   fg_color = fg;
+   bg_color = bg;
 }
 
-static void putpixel(int x, int y, u32 color)
+// Scrolls the text on the screen up by one line.
+static void scroll(void)
 {
-	fb[y*(a)+x] = color;
+   int screensiz = pitch * 16 * (height / 16) / sizeof(u32);
+   int rowsiz = pitch * 16 / sizeof(u32);
+   y_pos--;
+   for (int i = 0; i < screensiz - rowsiz; i++) {
+      fb[i] = fb[i + rowsiz];
+   }
 }
 
-void init_console(void *fb_addr, u16 fb_width, u16 fb_height, u16 fb_pitch)
+
+void init_console()
 {
-   fb = (u32 *)fb_addr;
-   width = fb_width;
-   height = fb_height;
-   pitch = fb_pitch;
-   a = pitch/sizeof(u32);
    cls();
+
    puts("\nSlops version 0.0.0 (compiled on ");
    puts(__DATE__);
    puts(" at ");
@@ -553,19 +555,8 @@ void printk(const char *fmt, ...)
 
 void puts(const char *str)
 {
-	while (*str)
-		putc(*str++);
-}
-
-// Scrolls the text on the screen up by one line.
-static void scroll(void)
-{
-	y_pos--;
-	int rowsiz = pitch * 16 / sizeof(u32);
-	int screensiz = pitch * 16 * (height / 16) / sizeof(u32);
-	for (int i = 0; i < screensiz - rowsiz; i++) {
-		fb[i] = fb[i + rowsiz];
-	}
+   while (*str)
+      putc(*str++);
 }
 
 // Writes a single character out to the screen.
@@ -590,30 +581,30 @@ void putc(char c)
          set_color(DEFAULT_FG_COLOR, 0xf72202);
          goto new_color;
         }
-	int x_pix = x_pos * 8; // font width
-	int y_pix = y_pos * 16; // font height
-	u8 *glyph = &font_bitmap[c*16];
-	for (int i = 0; i < 16; i++) {
-		for (int j = 7 /*8-1*/; j >= 0; j--) {
-			if (glyph[i] & (1 << j))
-				putpixel(x_pix++, y_pix, fg_color);
-			else
-				putpixel(x_pix++, y_pix, bg_color);
-		}
-		x_pix -= 8;
-		y_pix++;
-	}
-	x_pos++;
-	if (x_pos >= width / 8) {
+   int x_pix = x_pos * 8; // font width
+   int y_pix = y_pos * 16; // font height
+   u8 *glyph = &font_bitmap[c*16];
+   for (int i = 0; i < 16; i++) {
+      for (int j = 7 /*8-1*/; j >= 0; j--) {
+         if (glyph[i] & (1 << j))
+            putpixel(x_pix++, y_pix, fg_color);
+         else
+            putpixel(x_pix++, y_pix, bg_color);
+      }
+      x_pix -= 8;
+      y_pix++;
+   }
+   x_pos++;
+   if (x_pos >= width / 8) {
 newline:
-        	y_pos++;
-        	x_pos = 0;
-                putc(' ');
-    	}
+      y_pos++;
+      x_pos = 0;
+      putc(' ');
+   }
 new_color:
-	if (y_pos >= height / 16 - 1) {
-		scroll();
-	}
+   if (y_pos >= height / 16 - 1) {
+      scroll();
+   }
 }
 
 char *get_timestamp(void)

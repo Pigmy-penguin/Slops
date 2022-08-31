@@ -34,7 +34,7 @@
 #define DEFAULT_FG_COLOR 0xffffff
 #define DEFAULT_BG_COLOR 0x000000
 
-void init_console(void *fb_addr, u16 fb_width, u16 fb_height, u16 fb_pitch);
+void init_console(void);
 void putc(char c);
 void puts(const char *str); 
 void cls(void);
