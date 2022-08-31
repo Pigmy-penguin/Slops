@@ -484,7 +484,7 @@ void printk(const char *fmt, ...)
    vsnprintk(buffer, sizeof(buffer), fmt, vl);
 
    __builtin_va_end(vl);
-   char ts[17] = "@[    0.000] ";
+   char ts[17] = "![    0.000] ";
    u64 ms = tsc_get_ms();
    // Display timestamp
    // TODO: optimize timestamp display
@@ -569,7 +569,7 @@ void putc(char c)
       case '~':
          set_color(DEFAULT_FG_COLOR, DEFAULT_BG_COLOR);
          goto new_color;
-      case '@':
+      case '!':
          set_color(0x34eba8, DEFAULT_BG_COLOR);
          goto new_color;
       case '*':
