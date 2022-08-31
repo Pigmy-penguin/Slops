@@ -74,9 +74,8 @@ struct gdt_struct
     struct gdt_tss_struct tss;
 }__attribute__((packed));
 
-static inline void read_gdtr(struct gdtr *dtr)
-{
-	asm volatile("sgdt %0":"=m" (*dtr));
+static inline void read_gdtr(struct gdtr *dtr){
+   asm volatile("sgdt %0":"=m" (*dtr));
 }
 
 void gdt_load(void);

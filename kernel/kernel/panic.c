@@ -36,6 +36,7 @@ void panic(const char *msg, const char *file, u32 line, ...)
    __builtin_va_start(args, line);
    cls();
    putc('\n');
+
    char message[1024];
    vsnprintk(message, sizeof(message), msg, args);
    serial_print("PANIC: \"%s\" at %s:%d\n", message, file, line);

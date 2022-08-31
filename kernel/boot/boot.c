@@ -17,9 +17,11 @@
 #include <kernel/types.h>
 #include <boot/limine.h>
 #include <kernel/console.h>
+#include <kernel/cmdline.h>
 #include <arch/amd64/include/emu.h>
 #include <drivers/char/serial.h>
 #include <drivers/firmware/smbios.h>
+#include <drivers/graphics/fb.h>
 #include <kernel/console.h>
 #include <arch/amd64/cpu/gdt.h>
 #include <arch/amd64/cpu/idt.h>
@@ -57,6 +59,11 @@ struct limine_kernel_address_request kernel_address_request = {
     .revision = 0
 };
 
+struct limine_kernel_file_request kernel_file_request = {
+   .id = LIMINE_KERNEL_FILE_REQUEST,
+   .revision = 0
+};
+
 static void done(void) {
  for (;;) {
         __asm__("hlt");
@@ -73,11 +80,24 @@ void _start(void)
 
     if (framebuffer_request.response != NULL 
           || framebuffer_request.response->framebuffer_count == 1) {
-       init_console(framebuffer_request.response->framebuffers[0]->address, framebuffer_request.response->framebuffers[0]->width, framebuffer_request.response->framebuffers[0]->height, framebuffer_request.response->framebuffers[0]->pitch);
+       init_fb(framebuffer_request.response->framebuffers[0]->address, framebuffer_request.response->framebuffers[0]->width, framebuffer_request.response->framebuffers[0]->height, framebuffer_request.response->framebuffers[0]->pitch);
+       init_console();
        serial_print("Successfully initialized framebuffer console\n");
     }
     else
        serial_print("Error while initializing fb console\n");
+
+#ifdef DEBUG
+    pr_info("Debug enabled");
+    serial_print("Debug enabled\n");
+#endif
+
+    show_logo();
+
+    if (kernel_file_request.response != NULL) {
+       pr_info("Kernel path : \"%s\"", kernel_file_request.response->kernel_file->path);
+       parse_cmdline(kernel_file_request.response->kernel_file->cmdline);
+    }
 
     if (kernel_address_request.response != NULL) {
        __physical_base = kernel_address_request.response->physical_base;
@@ -115,6 +135,7 @@ void _start(void)
 
     gdt_load();
     idt_load();
+
     pr_warn("End of kernel");
     done();
 }

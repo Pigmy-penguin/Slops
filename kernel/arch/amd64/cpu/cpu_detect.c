@@ -22,7 +22,8 @@
 
 #define MODULE_NAME "cpu"
 
-static void detect_intel(void) {
+static void detect_intel(void) 
+{
    // TODO: add more things to detect
    u32 hi, lo;
    u64 type;
@@ -43,11 +44,13 @@ static void detect_intel(void) {
    }
 }
 
-static void detect_amd(void) {
+static void detect_amd(void) 
+{
    // TODO: detect amd cpus
 }
 
-int detect_cpu(void) {
+int detect_cpu(void) 
+{
    // let's detect the cpu vendor
    static char magic[16] = "";
    cpuid_string(0, (int*)(magic));

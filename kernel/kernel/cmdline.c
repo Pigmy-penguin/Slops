@@ -14,19 +14,15 @@
    limitations under the License.
 */
 
-#ifndef MSR_H
-#define MSR_H
-#include <kernel/types.h>
+#include <kernel/cmdline.h>
+#include <kernel/string.h>
+#include <kernel/console.h>
+#define MODULE_NAME "cmdline"
 
-// TODO: implement a function that checks if MSRs are available
-// using this: const u32 CPUID_FLAG_MSR = 1 << 5;
+struct settings kernel_settings;
 
-void cpu_get_msr(u32 msr, u32 *lo, u32 *hi) {
-   asm volatile("rdmsr" : "=a"(*lo), "=d"(*hi) : "c"(msr));
+void parse_cmdline(char *cmdline) 
+{
+   pr_info("Kernel cmdline: \"%s\"", cmdline);
+   kernel_settings.console_screen = 1;
 }
-
-void cpu_set_msr(u32 msr, u32 lo, u32 hi) {
-   asm volatile("wrmsr" : : "a"(lo), "d"(hi), "c"(msr));
-}
-
-#endif

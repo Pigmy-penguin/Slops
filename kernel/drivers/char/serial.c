@@ -27,6 +27,7 @@ static void serial_putc(char c)
 {
    outb(COM1 + 0, c);
 }
+
 static void serial_puts(const char *str)
 {
    while(*str)

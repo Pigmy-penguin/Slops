@@ -26,7 +26,8 @@ u16 height;
 u16 pitch;
 u16 a;
 
-static inline void draw_icon(int x, int y, int w, int h, u32 *img) {
+static inline void draw_icon(int x, int y, int w, int h, u32 *img) 
+{
    int j, l, i;
 
    for (l = j = 0; l < h; l++) {

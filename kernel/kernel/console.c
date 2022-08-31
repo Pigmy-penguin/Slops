@@ -419,138 +419,136 @@ void cls(void)
 int vsnprintk(char *buffer, u32 buffer_size, const char *fmt,
 	      __builtin_va_list vl)
 {
-	char c;
-	char buf[20];
-	char *p = NULL;
+   char c;
+   char buf[20];
+   char *p = NULL;
 
-	u32 buffer_index = 0;
+   u32 buffer_index = 0;
 
-	while ((c = *fmt++) != 0) {
-		if (c == '%') {
-			c = *fmt++;
-			switch (c) {
-			case 'p':
-			case 'x':
-				buf[0] = '0';
-				buf[1] = 'x';
-				itoa(buf + 2, c, __builtin_va_arg(vl, int));
-				p = buf;
-				goto string;
-				break;
-				// case 'l':
-				//      *fmt++;
-				//      c = 'd';
-				//      // fallthrough
-			case 'd':
-			case 'u':
-				itoa(buf, c, __builtin_va_arg(vl, int));
-				p = buf;
-				goto string;
-				break;
-
-			case 's':
-				p = __builtin_va_arg(vl, char *);
-				if (!p)
-					p = "(null)";
-
+   while ((c = *fmt++) != 0) {
+      if (c == '%') {
+         c = *fmt++;
+         switch (c) {
+            case 'p':
+            case 'x':
+               buf[0] = '0';
+               buf[1] = 'x';
+               itoa(buf + 2, c, __builtin_va_arg(vl, int));
+               p = buf;
+               goto string;
+               break;
+               // case 'l':
+               //      *fmt++;
+               //      c = 'd';
+               //      // fallthrough
+            case 'd':
+            case 'u':
+               itoa(buf, c, __builtin_va_arg(vl, int));
+               p = buf;
+               goto string;
+               break;
+            case 's':
+               p = __builtin_va_arg(vl, char *);
+               if (!p)
+                  p = "(null)";
 string:
-				while (*p) {
-					buffer[buffer_index++] = (*p++);
-				}
-				break;
+               while (*p) {
+                  buffer[buffer_index++] = (*p++);
+               }
+               break;
+default:
+               buffer[buffer_index++] =
+                  __builtin_va_arg(vl, int);
+               break;
+         }
+      } else {
+         buffer[buffer_index++] = c;
+      }
+      if (buffer_index >= buffer_size - 1) {
+         break;
+      }
+   }
 
-			default:
-				buffer[buffer_index++] =
-				    __builtin_va_arg(vl, int);
-				break;
-			}
-		} else {
-			buffer[buffer_index++] = c;
-		}
+   buffer[buffer_index] = '\0';
 
-		if (buffer_index >= buffer_size - 1) {
-			break;
-		}
-	}
-
-	buffer[buffer_index] = '\0';
-
-	return buffer_index;
+   return buffer_index;
 }
 
 void printk(const char *fmt, ...)
 {
-	char buffer[1024];
+   char buffer[1024];
 
-	__builtin_va_list vl;
-	__builtin_va_start(vl, fmt);
+   __builtin_va_list vl;
+   __builtin_va_start(vl, fmt);
+   
+   vsnprintk(buffer, sizeof(buffer), fmt, vl);
 
-	vsnprintk(buffer, sizeof(buffer), fmt, vl);
+   __builtin_va_end(vl);
+   char ts[17] = "@[    0.000] ";
+   u64 ms = tsc_get_ms();
+   // Display timestamp
+   // TODO: optimize timestamp display
 
-	__builtin_va_end(vl);
-        char ts[17] = "@[    0.000] ";
-        u64 ms = tsc_get_ms();
-        // Display timestamp
-        // TODO: optimize timestamp display
-        if (ms == 0) {
-           puts(ts);
-        }
-        else if (fmt[0] == '$') {
-           ;
-        }
-        else {
-           // Count number of digits
-           u64 seconds = ms / 1000;
-           u64 milliseconds = ms - (seconds*1000);
-           int num = seconds; 
-           u8 count = 0;
-           do
-           {
-              //Increment digit count
-              count++;
-              //Remove last digit of num
-              num /= 10;
-           }
-           while(num != 0);
+   if (fmt[0] == '$') 
+      ;
 
-           int x = 2;
-           for (int i = (5 - count); i != 0; i--) {
-              ts[x] = ' ';
-              x++;
-           }
-           itoa(&ts[x], 10, seconds);
-           for (int i = count; i != 0; i--) {
-              x++;
-           }
-           ts[x] = '.';
-           x++;
-           num = milliseconds;
-           u8 count2 = 0;
-           do
-           {
-              //Increment digit count
-              count2++;
-              //Remove last digit of num
-              num /= 10;
-           }
-           while(num != 0);
+   else if (ms == 0)
+      puts(ts);
 
-           if (count2 == 2) {
-              ts[x] = '0';
-              x++;
-           }
-           else if (count2 == 1) {
-              ts[x] = '0';
-              x++;
-              ts[x] = '0';
-              x++;
-           }
-           itoa(&ts[x], 10, milliseconds);
-           ts[11] = ']';
-           ts[12] = ' ';
-           puts(ts);
-        }
-        puts(buffer);
+   else {
+      // Count number of digits
+      u64 seconds = ms / 1000;
+      u64 milliseconds = ms - (seconds*1000);
+      int num = seconds; 
+      u8 count = 0;
+      do
+      {
+         //Increment digit count
+         count++;
+         //Remove last digit of num
+         num /= 10;
+      }
+      while(num != 0);
+
+      int x = 2;
+      for (int i = (5 - count); i != 0; i--) {
+         ts[x] = ' ';
+         x++;
+      }
+
+      itoa(&ts[x], 10, seconds);
+      for (int i = count; i != 0; i--) {
+         x++;
+      }
+      ts[x] = '.';
+      x++;
+      num = milliseconds;
+      u8 count2 = 0;
+      do
+      {
+         //Increment digit count
+         count2++;
+         //Remove last digit of num
+         num /= 10;
+      }
+      while(num != 0);
+
+      if (count2 == 2) {
+         ts[x] = '0';
+         x++;
+      }
+      else if (count2 == 1) {
+         ts[x] = '0';
+         x++;
+         ts[x] = '0';
+         x++;
+      }
+      itoa(&ts[x], 10, milliseconds);
+      ts[11] = ']';
+      ts[12] = ' ';
+      puts(ts);
+   }
+   puts(buffer);
 }
 
 void puts(const char *str)

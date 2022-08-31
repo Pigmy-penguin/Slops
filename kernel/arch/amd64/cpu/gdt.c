@@ -37,7 +37,8 @@ static struct tss_struct tss = {
 	.iopb_offset = 0,
 };
 
-static struct segment_descr make_gdt_ent(u32 base, u32 limit, u8 access_byte, u8 flags) {
+static struct segment_descr make_gdt_ent(u32 base, u32 limit, u8 access_byte, u8 flags) 
+{
    struct segment_descr gdt_ent = { };
    
    gdt_ent.limit0 = (u16) ((limit) & 0xffff);
@@ -51,7 +52,8 @@ static struct segment_descr make_gdt_ent(u32 base, u32 limit, u8 access_byte, u8
    return gdt_ent;
 }
 
-static struct gdt_tss_struct make_gdt_tss(u64 tss_addr) {
+static struct gdt_tss_struct make_gdt_tss(u64 tss_addr) 
+{
    struct gdt_tss_struct gdt_tss;
 
    gdt_tss.len = sizeof(struct tss_struct);
@@ -66,7 +68,8 @@ static struct gdt_tss_struct make_gdt_tss(u64 tss_addr) {
    return gdt_tss;
 }
 
-void gdt_load() {
+void gdt_load() 
+{
    struct gdtr current_gdtr;
    read_gdtr(&current_gdtr);
    pr_info("Current (linear) GDT address %x", current_gdtr.address);
@@ -85,7 +88,9 @@ void gdt_load() {
 
    gdt.tss = make_gdt_tss((u64) & tss); // TSS segment
    pr_info("Created %d GDT entries", GDT_ENTRY_COUNT);
+
    gdt_flush((u64)&gdt_descriptor);
+
    pr_info("GDT properly loaded");
    pr_info("Loaded GDT base %x", gdt_descriptor.address);
    pr_info("Loaded GDT size %x", gdt_descriptor.size);

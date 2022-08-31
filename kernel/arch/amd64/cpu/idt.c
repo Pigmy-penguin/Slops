@@ -24,7 +24,8 @@ static struct interrupt_desc idt[256];
 static struct idtr_struct idtr;
 extern isr_t __interrupt_vector[];
 
-void idt_set_descriptor(u8 vector, void* isr, u8 flags) {
+void idt_set_descriptor(u8 vector, void* isr, u8 flags) 
+{
    struct interrupt_desc* descriptor = &idt[vector];
 
    descriptor->offset_0 = (u64)isr & 0xFFFF;
@@ -36,7 +37,8 @@ void idt_set_descriptor(u8 vector, void* isr, u8 flags) {
    descriptor->zero = 0;
 }
 
-void idt_load() {
+void idt_load() 
+{
    idtr.addr = (u64)&idt[0];
    idtr.size = (u16)sizeof(idt) - 1;
 
