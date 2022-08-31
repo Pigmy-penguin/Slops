@@ -106,9 +106,10 @@ void _start(void)
        pr_info("Kernel virtual base address: %x", __virtual_base);
     }
 
+    calibrate_tsc();
+
     detect_cpu();
 
-    calibrate_tsc();
     pr_info("Milliseconds since boot: %d", tsc_get_ms());
     if (bootloader_info_request.response != NULL)
        pr_info("Bootloader: %s %s", bootloader_info_request.response->name, bootloader_info_request.response->version);
