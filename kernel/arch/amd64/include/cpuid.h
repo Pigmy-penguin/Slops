@@ -18,8 +18,20 @@
 #define CPUID_H
 #include <kernel/types.h>
 
-static inline void cpuid(int code, u32 *a, u32 *d) {
-  asm volatile("cpuid":"=a"(*a),"=d"(*d):"a"(code):"ecx","ebx");
+
+static inline void cpuid(int code, u32 *eax, u32 *ebx, u32 *ecx, u32 *edx) {
+  asm volatile("cpuid":"=a"(*eax),"=b"(*ebx),"=c"(*ecx),"=d"(*edx):"a"(code):);
+}
+
+static inline u32 get_cpuid_max(unsigned int ext, unsigned int *sig) {
+   u32 b,c,d;
+   u32 max_leaf;
+
+   cpuid(ext, &max_leaf, &b, &c, &d);
+   if (sig)
+      *sig = b;
+
+   return max_leaf;
 }
  
 static inline int cpuid_string(int code, int where[4]) {

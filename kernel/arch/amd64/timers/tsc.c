@@ -14,19 +14,18 @@
    limitations under the License.
 */
 
-#include <arch/amd64/timers/tsc.h>
-#include <drivers/char/serial.h>
-#include <arch/amd64/include/msr.h>
 #include <kernel/console.h>
+#include <drivers/char/serial.h>
 #include <arch/amd64/timers/pit.h>
-#include <cpuid.h>
+#include <arch/amd64/timers/tsc.h>
+#include <arch/amd64/include/msr.h>
+#include <arch/amd64/include/cpuid.h>
 
 #define MODULE_NAME "tsc"
 
 static u64 tsc_freq = 0;
 extern u64 __time_at_boot;
 
-// TODO: use our cpuid function
 // TODO: only use the cpu to get the tsc, using MSRs
 void calibrate_tsc(void)
 {
@@ -34,20 +33,22 @@ void calibrate_tsc(void)
    u64 tsc_1, tsc_2;
 
    // Get the cpu/tsc frequency using cpuid
-   u32 maxleaf = __get_cpuid_max(0, NULL);
+   u32 maxleaf = get_cpuid_max(0, NULL);
 
    if (maxleaf >= 0x15) {
-      __cpuid(0x15, a, b, c, d);
+      cpuid(0x15, &a, &b, &c, &d);
       // EBX : TSC/Crystal ratio, ECX : Crystal Hz 
-      if (b && c)
+      if (b && c) {
          tsc_freq = (c * (b / a));
+         return;
+      }
    }
    // Else calculate it
    tsc_1 = get_tsc();
    pit_wait(100);
    tsc_2 = get_tsc();
 
-   tsc_freq = ((tsc_2 - tsc_1) * 10) - 11111;
+   tsc_freq = ((tsc_2 - tsc_1) * 10) - 15000;
    pr_info("TSC frequency (not accurate): %d KHz", tsc_freq / 1000);
 }
 
