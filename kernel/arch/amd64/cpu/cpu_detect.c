@@ -22,14 +22,32 @@
 
 #define MODULE_NAME "cpu"
 
+/* Print Registers */
+static void printregs(int eax, int ebx, int ecx, int edx) {
+   int j;
+   char string[17];
+   string[16] = '\0';
+   for(j = 0; j < 4; j++) {
+      string[j] = eax >> (8 * j);
+      string[j + 4] = ebx >> (8 * j);
+      string[j + 8] = ecx >> (8 * j);
+      string[j + 12] = edx >> (8 * j);
+   }
+   puts(string);
+}
+
 static void detect_intel(void) 
 {
    // TODO: add more things to detect
-   u32 hi, lo;
-   u64 type;
-   cpuid(0, &hi, &lo);
-   type = (hi >> 12) & 0x3;
-   switch (type) {
+   u32 a, b, c, d;
+   u32 max_leaf;
+   u32 family;
+   u32 model;
+
+   cpuid(1, &a, &b, &c, &d);
+   struct cpu_version *proc_info = (struct cpu_version*)&a;
+
+   switch (proc_info->type) {
       case 0:
          pr_info("CPU type: Original equipment manufacturer (OEM) Processor");
          break;
@@ -41,6 +59,39 @@ static void detect_intel(void)
          break;
       case 3:
          pr_warn("CPU type: Reserved");
+   }
+
+   if (proc_info->family_id == 0xf)
+      family = proc_info->family_id + proc_info->extended_family_id;
+   else
+      family = proc_info->family_id;
+
+   if (proc_info->family_id == 0xf || proc_info->family_id == 0x06)
+      model = (proc_info->extended_model_id << 4) + proc_info->model;
+   else
+      model = proc_info->model;
+   
+   pr_info("CPU family: %d", family);
+   pr_info("Model: %d", model);
+
+   // Print brand string
+   cpuid(0x80000000, &max_leaf, &b, &c, &d);
+
+   if (max_leaf >= 0x80000004) {
+      printk("*" MODULE_NAME "~: Model Name: ");
+      if (max_leaf >= 0x80000002) {
+         cpuid(0x80000002, &a, &b, &c, &d);
+         printregs(a, b, c, d);
+      }
+      if(max_leaf >= 0x80000003) {
+         cpuid(0x80000003, &a, &b, &c, &d);
+         printregs(a, b, c, d);
+      }
+      if(max_leaf >= 0x80000004) {
+         cpuid(0x80000004, &a, &b, &c, &d);
+         printregs(a, b, c, d);
+      }
+      putc('\n');
    }
 }
 
