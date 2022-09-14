@@ -25,15 +25,15 @@
 #define CPUID_VENDOR_INTEL "GenuineIntel"
 
 struct cpu_version {
-   u8 stepping_id : 4;
-   u8 model : 4;
-   u8 family_id : 4;
-   u8 type : 2;
-   u8 reserved0 : 2;
-   u8 extended_model_id : 4;
-   u8 extended_family_id;
-   u8 reserved1: 4;
-}__attribute((packed));
+  u8 stepping_id : 4;
+  u8 model : 4;
+  u8 family_id : 4;
+  u8 type : 2;
+  u8 reserved0 : 2;
+  u8 extended_model_id : 4;
+  u8 extended_family_id;
+  u8 reserved1 : 4;
+} __attribute((packed));
 
 int detect_cpu(void);
 

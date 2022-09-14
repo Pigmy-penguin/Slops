@@ -27,4 +27,4 @@ void memset(void *dest, u8 val, u32 len);
 void memcpy(void *dest, const void *src, u32 len);
 void itoa(char *buf, u64 base, u64 d);
 
-#endif 
+#endif

@@ -5,7 +5,7 @@
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+           http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,14 +15,13 @@
 */
 
 #include <kernel/cmdline.h>
-#include <kernel/string.h>
 #include <kernel/console.h>
+#include <kernel/string.h>
 #define MODULE_NAME "cmdline"
 
 struct settings kernel_settings;
 
-void parse_cmdline(char *cmdline) 
-{
-   pr_info("Kernel cmdline: \"%s\"", cmdline);
-   kernel_settings.console_screen = 1;
+void parse_cmdline(char *cmdline) {
+  pr_info("Kernel cmdline: \"%s\"", cmdline);
+  kernel_settings.console_screen = 1;
 }

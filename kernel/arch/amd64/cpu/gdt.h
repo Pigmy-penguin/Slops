@@ -29,59 +29,55 @@
 #define GDT_ACCESS_BYTE 0b1100
 
 struct gdtr {
-   u16 size;
-   u64 address;
-}__attribute__((packed));
+  u16 size;
+  u64 address;
+} __attribute__((packed));
 
 struct segment_descr {
-   u16 limit0;
-   u16 base0;
-   u8 base1;
-   u8 access_byte; // AKA flags
-   u8 limit1 : 4;
-   u8 flags : 4;
-   u8 base2;
+  u16 limit0;
+  u16 base0;
+  u8 base1;
+  u8 access_byte; // AKA flags
+  u8 limit1 : 4;
+  u8 flags : 4;
+  u8 base2;
 
-}__attribute__((packed));
-
-struct tss_struct
-{
-    u32 reserved;
-    u64 rsp[3];
-    u64 reserved0;
-    u64 ist[7];
-    u32 reserved1;
-    u32 reserved2;
-    u16 reserved3;
-    u16 iopb_offset;
 } __attribute__((packed));
 
-struct gdt_tss_struct
-{
-    u16 len;
-    u16 base_low;
-    u8 base_mid;
-    u8 flags0;
-    u8 flags1;
-    u8 base_high;
-    u32 base_upper;
-    u32 reserved;
+struct tss_struct {
+  u32 reserved;
+  u64 rsp[3];
+  u64 reserved0;
+  u64 ist[7];
+  u32 reserved1;
+  u32 reserved2;
+  u16 reserved3;
+  u16 iopb_offset;
 } __attribute__((packed));
 
-struct gdt_struct
-{
-    struct segment_descr entries[GDT_ENTRY_COUNT];
-    struct gdt_tss_struct tss;
-}__attribute__((packed));
+struct gdt_tss_struct {
+  u16 len;
+  u16 base_low;
+  u8 base_mid;
+  u8 flags0;
+  u8 flags1;
+  u8 base_high;
+  u32 base_upper;
+  u32 reserved;
+} __attribute__((packed));
 
-static inline void read_gdtr(struct gdtr *dtr){
-   asm volatile("sgdt %0":"=m" (*dtr));
+struct gdt_struct {
+  struct segment_descr entries[GDT_ENTRY_COUNT];
+  struct gdt_tss_struct tss;
+} __attribute__((packed));
+
+static inline void read_gdtr(struct gdtr *dtr) {
+  asm volatile("sgdt %0" : "=m"(*dtr));
 }
 
 void gdt_load(void);
 
 void gdt_flush(u64);
 void tss_flush(u64);
-
 
 #endif

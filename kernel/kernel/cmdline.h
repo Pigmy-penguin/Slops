@@ -19,9 +19,9 @@
 #include <kernel/types.h>
 
 struct settings {
-   u8 console_screen;
-   u8 console_serial;
-   u8 test;
+  u8 console_screen;
+  u8 console_serial;
+  u8 test;
 };
 
 void parse_cmdline(char *cmdline);
