@@ -52,7 +52,10 @@ CFLAGS := 	-ffreestanding			\
 			-fno-builtin		\
 			-nostdlib		\
 			-nostdinc		\
-			-mgeneral-regs-only	\
+			-mno-red-zone		\
+			-mno-mmx		\
+			-mno-sse		\
+			-mno-sse2		\
 			-target x86_64-elf
 
 ifneq ($(V),)
