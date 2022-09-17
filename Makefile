@@ -9,7 +9,7 @@ OBJ         := $(ASMSOURCES:.S=.o) $(CSOURCES:.c=.o)
 ifneq ($(DEBUG),)
   COMMON_CFLAGS     += -g -DDEBUG
 else
-  COMMON_CFLAGS     += -DNDEBUG -O0
+  COMMON_CFLAGS     += -DNDEBUG -Os
 endif
 
 
@@ -23,35 +23,36 @@ SHOW_LD		:= $(SHOW_COMMAND) "[ $(LD) ]"
 SHOW_INSTALL	:= $(SHOW_COMMAND) "[ INSTALL ]"
 SHOW_CLEAN	:= $(SHOW_COMMAND) "[ CLEAN ]"
 
-ASFLAGS := 	-I./kernel/ 		\
-			-m64			\
-			-c 				\
+ASFLAGS := 	-I./kernel/		\
+			-m64		\
+			-c		\
 			-g
 
-LDFLAGS := 	-nostdlib              	\
+LDFLAGS := 	-nostdlib			\
 			-zmax-page-size=0x1000 	\
 			-static                	\
 			--no-dynamic-linker    	\
-			-ztext					\
+			-ztext			\
 			--oformat elf64-x86-64	\
-			-m elf_x86_64			\
+			-m elf_x86_64		\
 			-Tkernel/linker.ld
 
-CFLAGS := 	-ffreestanding 							\
-			$(COMMON_CFLAGS)						\
-			-fno-stack-protector 					\
-			-fpie                					\
-			-c 										\
-			-m64 									\
-			-I./kernel/ 						\
-			-Wall 									\
-			-Wextra 								\
-			-Wstrict-prototypes 					\
-			-MMD 									\
-			-Werror 								\
-			-fno-builtin							\
-			-nostdlib							\
-			-nostdinc							\
+CFLAGS := 	-ffreestanding			\
+			$(COMMON_CFLAGS)	\
+			-fno-stack-protector 	\
+			-fpie                	\
+			-c 			\
+			-m64 			\
+			-I./kernel/ 		\
+			-Wall 			\
+			-Wextra 		\
+			-Wstrict-prototypes 	\
+			-MMD 			\
+			-Werror 		\
+			-fno-builtin		\
+			-nostdlib		\
+			-nostdinc		\
+			-mgeneral-regs-only	\
 			-target x86_64-elf
 
 ifneq ($(V),)
