@@ -22,7 +22,7 @@
 #include <boot/limine.h>
 #include <drivers/char/serial.h>
 #include <drivers/firmware/smbios.h>
-#include <drivers/graphics/fb.h>
+#include <drivers/video/fb.h>
 #include <kernel/cmdline.h>
 #include <kernel/console.h>
 #include <kernel/types.h>

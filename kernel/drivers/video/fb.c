@@ -14,8 +14,8 @@
    limitations under the License.
 */
 
-#include <drivers/graphics/fb.h>
-#include <drivers/graphics/tga.h>
+#include <drivers/video/fb.h>
+#include <drivers/video/tga.h>
 
 #include <drivers/char/serial.h>
 #include <kernel/string.h>

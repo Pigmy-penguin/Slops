@@ -15,7 +15,7 @@
 */
 
 #include <arch/amd64/timers/tsc.h>
-#include <drivers/graphics/fb.h>
+#include <drivers/video/fb.h>
 #include <kernel/console.h>
 #include <kernel/string.h>
 #include <kernel/types.h>
