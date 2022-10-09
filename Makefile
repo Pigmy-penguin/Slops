@@ -7,7 +7,7 @@ HEADER_DEPS := $(CSOURCES:.c=.d)
 OBJ         := $(ASMSOURCES:.S=.o) $(CSOURCES:.c=.o)
 
 ifneq ($(DEBUG),)
-  COMMON_CFLAGS     += -g -DDEBUG
+  COMMON_CFLAGS     += -g -DDEBUG -Wno-error -Wno-unused-parameter
 else
   COMMON_CFLAGS     += -DNDEBUG -Os
 endif
@@ -35,7 +35,9 @@ LDFLAGS := 	-nostdlib			\
 			-ztext			\
 			--oformat elf64-x86-64	\
 			-m elf_x86_64		\
-			-Tkernel/linker.ld
+			-Tkernel/linker.ld	\
+			kernel/drivers/video/font.o \
+			-Map kernel.map
 
 CFLAGS := 	-ffreestanding			\
 			$(COMMON_CFLAGS)	\
@@ -68,7 +70,7 @@ LIMINE_DIR := limine
 LIMINE := $(LIMINE_DIR)/limine-install
 
 QEMU := qemu-system-x86_64
-QEMU_FLAGS := -M q35 -m 2G -enable-kvm -cpu host -debugcon file:debug.txt -serial stdio# -s -S
+QEMU_FLAGS := -M q35 -m 2G -enable-kvm -cpu host -serial file:debug.txt# -s -S
 
 TMP_ISO_ROOT := tmp_iso_root
 

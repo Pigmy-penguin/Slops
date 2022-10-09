@@ -16,6 +16,7 @@
 
 #include <arch/amd64/cpu/cpu_detect.h>
 #include <arch/amd64/include/cpuid.h>
+#include <drivers/char/serial.h>
 #include <kernel/console.h>
 #include <kernel/string.h>
 #include <kernel/types.h>
@@ -90,7 +91,7 @@ static void detect_intel(void) {
       cpuid(0x80000004, &a, &b, &c, &d);
       printregs(a, b, c, d);
     }
-    putc('\n');
+    puts("\n");
   }
 }
 

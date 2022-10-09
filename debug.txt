@@ -1,0 +1,44 @@
+[92m[    0.000] [93mboot[0m: Debug enabled
+[92m[    0.000] [93mboot[0m: Successfully initialized framebuffer console
+
+Slops version 0.0.0
+
+[92m[    0.000] [93mboot[0m: Kernel path: "/kernel.elf"
+[92m[    0.000] [93mcmdline[0m: Kernel cmdline: "console_serial=1 console_fb=1"
+[92m[    0.000] [93mboot[0m: Kernel physical base address: 0x7FA9E000
+[92m[    0.000] [93mboot[0m: Kernel virtual base address: 0xFFFFFFFF80000000
+[92m[    0.106] [93mtsc[0m: TSC frequency (not accurate): 2329776 KHz
+[92m[    0.107] [93mcpu[0m: CPU Vendor string: GenuineIntel
+[92m[    0.108] [93mcpu[0m: Intel specific detection
+[92m[    0.109] [93mcpu[0m: CPU type: Original equipment manufacturer (OEM) Processor
+[92m[    0.109] [93mcpu[0m: CPU family: 6
+[92m[    0.110] [93mcpu[0m: Model: 142
+[92m[    0.110] [93mcpu[0m: Model Name: Intel(R) Core(TM) i3-8145U CPU @ 2.10GHz
+[92m[    0.113] [93mboot[0m: Milliseconds since boot: 113
+[92m[    0.113] [93mboot[0m: Bootloader: Limine 3.20221009.0
+[92m[    0.114] [93msmbios[0m: Parsing 32 bits SMBIOS Entry point structure
+[92m[    0.115] [93msmbios[0m: Entry point: 0xF6CE0
+[92m[    0.115] [93msmbios[0m: SMBIOS 2.8 parsed
+[92m[    0.116] [93msmbios[0m: Structure table physical address at: 0xF6D00
+[92m[    0.117] [93msmbios[0m: [header 0 : BIOS Information]
+[92m[    0.118] [93msmbios[0m: [header 1 : System Information]
+[92m[    0.118] [93msmbios[0m: [header 2 : Enclosure/Chasis Information]
+[92m[    0.119] [93msmbios[0m: [header 3 : Processor Information]
+[92m[    0.120] [93msmbios[0m: Found processor information structure
+[92m[    0.121] [93mboot[0m: Processor max speed : 321 MHz
+[92m[    0.121] [93mgdt[0m: Current (linear) GDT address 0xEB14
+[92m[    0.123] [93mgdt[0m: Current GDT size 0x37
+[92m[    0.123] [93mgdt[0m: Created 5 GDT entries
+[92m[    0.124] [93mgdt[0m: GDT properly loaded
+[92m[    0.125] [93mgdt[0m: Loaded GDT base 0xFFFFFFFF80051C50
+[92m[    0.125] [93mgdt[0m: Loaded GDT size 0x37
+[92m[    0.126] [93midt[0m: Created 128 IDT entries
+[92m[    0.127] [93midt[0m: IDT properly loaded
+[92m[    0.127] [93midt[0m: Loaded IDT base: 0xFFFFFFFF80051CF0
+[92m[    0.128] [93midt[0m: Loaded IDT size: 0xFFF
+
+- PANIC -[0m "Hello" at kernel/boot/boot.c:125
+
+RIP[0m: 0xFFFFFFFF80002EFC
+
+TIME[0m: (SINCE BOOT) 135Ms

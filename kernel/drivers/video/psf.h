@@ -1,3 +1,4 @@
+
 /*
    Copyright 2022 Pigmy-penguin
 
@@ -14,19 +15,22 @@
    limitations under the License.
 */
 
-#ifndef FB_H
-#define FB_H
+#ifndef PSF_H
+#define PSF_H
 
 #include <kernel/types.h>
 
-// Default colors:
-#define DEFAULT_FG_COLOR 0xffffff
-#define DEFAULT_BG_COLOR 0x000000
+#define PSF_FONT_MAGIC 0x864ab572
 
-void putpixel(int x, int y, u32 color);
-void fb_putchar(char c);
-int init_fb(void *fb_addr, u16 fb_width, u16 fb_height, u16 fb_pitch);
-void show_logo(void);
-void cls(void);
+struct psf_font {
+  u32 magic;         /* magic bytes to identify PSF */
+  u32 version;       /* zero */
+  u32 headersize;    /* offset of bitmaps in file, 32 */
+  u32 flags;         /* 0 if there's no unicode table */
+  u32 numglyph;      /* number of glyphs */
+  u32 bytesperglyph; /* size of each glyph */
+  u32 height;        /* height in pixels */
+  u32 width;         /* width in pixels */
+}__attribute__((packed));
 
 #endif

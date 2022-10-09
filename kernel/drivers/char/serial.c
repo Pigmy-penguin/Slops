@@ -1,3 +1,19 @@
+/*
+   Copyright 2022 Pigmy-penguin
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+           http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+*/
+
 #include <arch/amd64/include/pio.h>
 #include <drivers/char/serial.h>
 #include <kernel/console.h>
@@ -22,11 +38,29 @@ int init_serial(void) {
   return 0;
 }
 
-static void serial_putc(char c) { outb(COM1 + 0, c); }
+void serial_putchar(char c) {
+  switch (c) {
+  case '^':
+    serial_puts("\e[91m");
+    return;
+  case '~':
+    serial_puts("\e[0m");
+    return;
+  case '!':
+    serial_puts("\e[92m");
+    return;
+  case '*':
+    serial_puts("\e[93m");
+    return;
+  case '$':
+    return;
+  }
+  outb(COM1 + 0, c);
+}
 
-static void serial_puts(const char *str) {
+void serial_puts(const char *str) {
   while (*str)
-    serial_putc(*str++);
+    serial_putchar(*str++);
 }
 
 void serial_print(const char *fmt, ...) {

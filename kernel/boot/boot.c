@@ -60,30 +60,27 @@ static void done(void) {
 // The following will be our kernel's entry point.
 void _start(void) {
   __time_at_boot = get_tsc();
-  if (init_serial() == 0) {
-    serial_print("Successfully set up serial console\n");
-  }
-
-  if (framebuffer_request.response != NULL ||
-      framebuffer_request.response->framebuffer_count == 1) {
-    init_fb(framebuffer_request.response->framebuffers[0]->address,
-            framebuffer_request.response->framebuffers[0]->width,
-            framebuffer_request.response->framebuffers[0]->height,
-            framebuffer_request.response->framebuffers[0]->pitch);
-    init_console();
-    serial_print("Successfully initialized framebuffer console\n");
-  } else
-    serial_print("Error while initializing fb console\n");
+  init_console(1);
 
 #ifdef DEBUG
   pr_info("Debug enabled");
-  serial_print("Debug enabled\n");
 #endif
 
-  show_logo();
+  if (framebuffer_request.response != NULL ||
+      framebuffer_request.response->framebuffer_count == 1) {
+    if (init_fb(framebuffer_request.response->framebuffers[0]->address,
+   framebuffer_request.response->framebuffers[0]->width,
+                framebuffer_request.response->framebuffers[0]->height,
+                framebuffer_request.response->framebuffers[0]->pitch) != 0)
+      done();
+    pr_info("Successfully initialized framebuffer console");
+    init_console(0);
+    show_logo();
+  } else
+    pr_err("Error while initializing fb console");
 
   if (kernel_file_request.response != NULL) {
-    pr_info("Kernel path : \"%s\"",
+    pr_info("Kernel path: \"%s\"",
             kernel_file_request.response->kernel_file->path);
     parse_cmdline(kernel_file_request.response->kernel_file->cmdline);
   }

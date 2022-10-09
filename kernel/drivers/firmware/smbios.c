@@ -78,7 +78,7 @@ struct smbios_proc_info *get_proc_info() {
 
 void parse_smbios_ep32_struct(void *entry_32) {
   pr_info("Parsing 32 bits SMBIOS Entry point structure");
-  pr_info("Entry point (physical address): %x", entry_32);
+  pr_info("Entry point: %x", entry_32);
   struct smbios_entry_point_32 *smbios_ep =
       (struct smbios_entry_point_32 *)entry_32;
 
@@ -94,7 +94,7 @@ void parse_smbios_ep32_struct(void *entry_32) {
 
 void parse_smbios_ep64_struct(void *entry_64) {
   pr_info("Parsing 64 bits SMBIOS Entry point structure");
-  pr_info("Entry point : %x", entry_64);
+  pr_info("Entry point: %x", entry_64);
   struct smbios_entry_point_64 *smbios_ep =
       (struct smbios_entry_point_64 *)entry_64;
 

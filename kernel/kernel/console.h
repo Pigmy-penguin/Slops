@@ -31,14 +31,8 @@
 #define pr_err(fmt, ...) printk(ERR fmt "\n", ##__VA_ARGS__)
 #define pr_emerg(fmt, ...) printk(EMERG fmt "\n", ##__VA_ARGS__)
 
-// Default colors:
-#define DEFAULT_FG_COLOR 0xffffff
-#define DEFAULT_BG_COLOR 0x000000
-
-void init_console(void);
-void putc(char c);
+void init_console(int early_flag);
 void puts(const char *str);
-void cls(void);
 void printk(const char *fmt, ...);
 int vsnprintk(char *buffer, u32 buffer_size, const char *fmt,
               __builtin_va_list vl);

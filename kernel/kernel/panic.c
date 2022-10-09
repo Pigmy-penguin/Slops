@@ -15,6 +15,7 @@
 */
 
 #include <arch/amd64/timers/tsc.h>
+#include <drivers/video/fb.h>
 #include <drivers/char/serial.h>
 #include <kernel/console.h>
 #include <kernel/panic.h>
@@ -33,11 +34,10 @@ void panic(const char *msg, const char *file, u32 line, ...) {
   __builtin_va_list args;
   __builtin_va_start(args, line);
   cls();
-  putc('\n');
+  puts("\n");
 
   char message[1024];
   vsnprintk(message, sizeof(message), msg, args);
-  serial_print("PANIC: \"%s\" at %s:%d\n", message, file, line);
   printk("$- PANIC -~ \"%s\" at %s:%d\n\n", message, file, line);
   __builtin_va_end(args);
 
