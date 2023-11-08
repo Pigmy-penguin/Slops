@@ -77,7 +77,7 @@ void _start(void) {
     init_console(0);
     show_logo();
   } else
-    pr_err("Error while initializing fb console");
+    pr_err("Error while initializing fb console !");
 
   if (kernel_file_request.response != NULL) {
     pr_info("Kernel path: \"%s\"",
