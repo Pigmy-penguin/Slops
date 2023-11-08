@@ -63,7 +63,7 @@ void _start(void) {
   init_console(1);
 
 #ifdef DEBUG
-  pr_info("Debug enabled");
+  pr_info("Debug enabled !");
 #endif
 
   if (framebuffer_request.response != NULL ||
