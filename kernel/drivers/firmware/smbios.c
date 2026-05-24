@@ -62,7 +62,7 @@ static char *check_type(u8 type) {
   }
 }
 
-struct smbios_proc_info *get_proc_info() {
+struct smbios_proc_info *get_proc_info(void) {
   struct smbios_header *hdr = first_hdr;
   for (int i = 0; i <= 11; i++) {
     pr_info("[header %d : %s]", i, check_type(hdr->type));

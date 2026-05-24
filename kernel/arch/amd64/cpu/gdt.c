@@ -67,7 +67,7 @@ static struct gdt_tss_struct make_gdt_tss(u64 tss_addr) {
   return gdt_tss;
 }
 
-void gdt_load() {
+void gdt_load(void) {
   struct gdtr current_gdtr;
   read_gdtr(&current_gdtr);
   pr_info("Current (linear) GDT address %x", current_gdtr.address);
