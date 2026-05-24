@@ -80,6 +80,11 @@ all: $(ISO_IMAGE)
 
 run: $(ISO_IMAGE)
 	clear
+
+ifeq (, $(shell which qemu-system-x86_64))
+	$(error "no qemu \(qemu-system-x86_64\) $(PATH), consider installing qemu")
+endif
+
 	@echo "Running Slops..."
 	$(SILENCE)$(QEMU) $(QEMU_FLAGS) -cdrom $(ISO_IMAGE)
 
@@ -106,6 +111,11 @@ $(KERNEL): $(OBJ)
 	$(SILENCE)$(AS) $(ASFLAGS) $< -o $@
 
 $(ISO_IMAGE): $(KERNEL) $(LIMINE)
+
+ifeq (, $(shell which xorriso))
+	$(error "no xorriso $(PATH), consider installing xorriso")
+endif
+
 	$(SHOW_INSTALL) $@
 	$(SILENCE)rm -rf $(TMP_ISO_ROOT)
 	$(SILENCE)mkdir -p $(TMP_ISO_ROOT)

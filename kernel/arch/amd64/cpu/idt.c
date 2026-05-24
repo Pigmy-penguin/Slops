@@ -35,7 +35,7 @@ void idt_set_descriptor(u8 vector, void *isr, u8 flags) {
   descriptor->zero = 0;
 }
 
-void idt_load() {
+void idt_load(void) {
   idtr.addr = (u64)&idt[0];
   idtr.size = (u16)sizeof(idt) - 1;
 

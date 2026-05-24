@@ -10,8 +10,6 @@
       "-I./kernel/",
       "-Wall",
       "-Wextra",
-      "-Wstrict-prototypes",
-      "-Werror",
       "-fno-builtin",
       "-target",
       "x86_64-elf",

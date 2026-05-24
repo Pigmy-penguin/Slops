@@ -182,7 +182,7 @@ int init_fb(void *fb_addr, u16 fb_width, u16 fb_height, u16 fb_pitch) {
   return 0;
 }
 
-void show_logo() {
+void show_logo(void) {
   struct tga_header *logo = (struct tga_header *)&logo_tga;
   display_tga(logo);
 }
