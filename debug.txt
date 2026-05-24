@@ -1,1 +1,0 @@
-[92m[    0.000] [93mboot[0m: Successfully initialized framebuffer console
